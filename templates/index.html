@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>분봉코멘트 · 국장 1분봉 코멘트 차트</title>
+<meta name="description" content="국내 주식 종목코드를 입력하면 1분봉 캔들 차트를 실시간으로 보여주고, 매수·매도 시점에 코멘트를 남길 수 있는 트레이딩 노트">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-row">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__name">분봉코멘트</span>
+      </div>
+
+      <div class="ticker-control">
+        <input
+          id="ticker-input"
+          type="text"
+          inputmode="numeric"
+          pattern="\d{6}"
+          maxlength="6"
+          placeholder="종목코드 6자리 (예: 005930)"
+          autocomplete="off"
+          aria-label="종목코드 입력"
+        >
+        <button id="search-btn" type="button">조회</button>
+      </div>
+
+      <div class="price-readout">
+        <span id="stock-name" class="price-readout__name">종목을 조회해주세요</span>
+        <span id="stock-price" class="price-readout__price">—</span>
+        <span id="stock-change" class="price-readout__change">조회 구간 등락</span>
+      </div>
+    </div>
+
+    <div class="chip-row" id="quick-chips">
+      <button class="chip" data-ticker="005930">삼성전자</button>
+      <button class="chip" data-ticker="000660">SK하이닉스</button>
+      <button class="chip" data-ticker="035420">NAVER</button>
+      <button class="chip" data-ticker="035720">카카오</button>
+      <button class="chip" data-ticker="005380">현대차</button>
+    </div>
+  </header>
+
+  <div id="error-banner" class="error-banner" role="alert"></div>
+
+  <main class="layout">
+    <section class="chart-panel">
+      <div class="chart-panel__meta">
+        <span id="last-updated">실시간 업데이트 대기 중</span>
+        <span class="badge">1분봉 · 자동 갱신</span>
+      </div>
+
+      <div id="chart-container" class="chart-container"></div>
+
+      <div id="chart-empty" class="chart-empty">
+        <p>종목코드를 입력하고 <strong>조회</strong>를 눌러주세요.</p>
+        <p class="chart-empty__hint">코멘트가 달린 분봉에는 차트 위에 매수/매도 마커가 표시됩니다.</p>
+      </div>
+    </section>
+
+    <aside class="side-panel">
+      <div class="composer" id="comment-composer">
+        <h2>코멘트 작성</h2>
+        <p class="composer__hint">지금 이 순간을 매수 / 매도 지점으로 기록합니다. (작성 시각 기준)</p>
+
+        <div class="type-toggle" role="group" aria-label="코멘트 유형">
+          <button type="button" class="type-btn type-btn--buy is-active" data-type="buy">매수</button>
+          <button type="button" class="type-btn type-btn--sell" data-type="sell">매도</button>
+        </div>
+
+        <form id="comment-form">
+          <textarea
+            id="comment-text"
+            rows="3"
+            maxlength="500"
+            placeholder="이 시점에 대한 생각을 기록하세요"
+          ></textarea>
+          <button type="submit" id="comment-submit">코멘트 작성</button>
+        </form>
+      </div>
+
+      <div class="comment-feed">
+        <h2>코멘트 타임라인</h2>
+        <ul id="comment-list" class="comment-list"></ul>
+        <p id="comment-empty" class="comment-empty">아직 작성된 코멘트가 없습니다.</p>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      시세 데이터는 네이버 금융의 비공식 차트 API를 사용합니다. 지연 또는 오류가 발생할 수 있으며
+      투자 판단의 근거 자료가 아닙니다. 차트는
+      <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>
+      로 그렸습니다.
+    </p>
+  </footer>
+
+  <script src="https://unpkg.com/lightweight-charts@5.2.0/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="/js/chart.js"></script>
+</body>
+</html>
